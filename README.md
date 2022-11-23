@@ -1,2 +1,2 @@
 # todoist_automation
-UI Automation Report for Todoist APP
+UI Automation test report to validate the Todoist web APP

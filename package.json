@@ -19,5 +19,10 @@
   "dependencies": {
     "@playwright/test": "^1.28.1",
     "prettier": "^2.8.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "eslint": "^8.28.0"
   }
 }

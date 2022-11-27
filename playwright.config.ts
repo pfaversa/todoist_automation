@@ -8,7 +8,7 @@ const config: PlaywrightTestConfig = {
         //viewport:
         actionTimeout: 15000,
         video: 'off',
-        screenshot: 'off',
+        screenshot: 'only-on-failure',
     },
     projects: [
         {

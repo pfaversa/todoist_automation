@@ -6,15 +6,14 @@ export class LoginPage{
     readonly page: Page;
     readonly inputName: Locator;
     readonly inputPassword: Locator;
-    readonly loginButton: Locator;
+    readonly btnLogin: Locator;
     public errorMessage: Locator;
 
     constructor(page: Page){
         this.page = page;
-        this.inputName = page.locator('id=element-0');
-        this.inputPassword = page.locator('id=element-3');
-        this.loginButton = page.locator('//button[@data-gtm-id="start-email-login"]'); //css=[data-test-id="foo"]
-
+        this.inputName = page.locator('#element-0'); // Id
+        this.inputPassword = page.locator('#element-3'); // Id
+        this.btnLogin = page.locator('css=[data-gtm-id="start-email-login"]'); // css
     }
 
     async gotoLoginPage (){
@@ -35,7 +34,7 @@ export class LoginPage{
     }
 
     async clickLoginButton(){
-        await this.loginButton.click();
+        await this.btnLogin.click();
     }
 
     async assertErrorMessageLogin(message: string){

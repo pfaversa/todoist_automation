@@ -9,6 +9,7 @@ export class LoginPage{
     readonly btnLogin: Locator;
     readonly msInvalidEmail: Locator;
     readonly msWrongCredentials: Locator;
+    readonly msPasswordMissing: Locator;
 
     //define constructor
     constructor(page: Page){
@@ -18,6 +19,8 @@ export class LoginPage{
         this.btnLogin = page.locator('button[data-gtm-id="start-email-login"]'); // css
         this.msInvalidEmail = page.locator('#element-2') // Id
         this.msWrongCredentials = page.locator('//div[text()="Wrong email or password."]'); //xPath
+        this.msPasswordMissing = page.locator('#element-5'); //Id
+
     }
 
     // define methods
@@ -48,12 +51,19 @@ export class LoginPage{
     async assertWrongCredentialsMessage(){
         await this.msWrongCredentials.isVisible();
         await this.msInvalidEmail.isHidden();
+        await this.msPasswordMissing.isHidden();
+    }
+
+    async assertPasswordMissingMessage(){
+        await this.msPasswordMissing.isVisible();
+        await this.msWrongCredentials.isHidden();
+        await this.msInvalidEmail.isHidden();
     }
 
     async assertInvalidEmailMessage(){
         await this.msInvalidEmail.isVisible();
         await this.msWrongCredentials.isHidden();
-        
+        await this.msPasswordMissing.isHidden();
     }
 
 }

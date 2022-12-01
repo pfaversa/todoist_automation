@@ -10,7 +10,7 @@ let user_pass = doteenv.todoist_password
 let randomPassword = (Math.random() + 1).toString(36);
 let url_page = doteenv.todoist_url
 
-test.describe("Login / Logout Flow", () => {
+test.describe.only("Login / Logout Flow", () => {
     let loginPage: LoginPage
     let homePage: HomePage
     
@@ -18,7 +18,11 @@ test.describe("Login / Logout Flow", () => {
         loginPage = new LoginPage(page);
     })
 
-    test('Unsuccessful login / Wrong Email Account', async ({  }) =>{
+    test.afterAll(async ({ page }) =>{    
+        await page.close()
+    })
+
+    test('Unsuccessful login / Wrong Email Account', async ({ page }) =>{
         
         const user_acocunt = "non_existent@gmail.com"
   
@@ -27,9 +31,21 @@ test.describe("Login / Logout Flow", () => {
         await loginPage.fillPassword(randomPassword)
         await loginPage.clickLoginButton();
         await loginPage.assertWrongCredentialsMessage()
+        expect(page.url()).toEqual(url_page);
     })
 
-    test('Unsuccessful login / Invalide Email', async ({  }) =>{
+    test('Unsuccessful login / Password Missing', async ({ page }) =>{
+        
+        const user_acocunt = "test_emial@gmail.com"
+  
+        await loginPage.gotoLoginPage(url_page);
+        await loginPage.fillEmail(user_acocunt);
+        await loginPage.clickLoginButton();
+        await loginPage.assertWrongCredentialsMessage()
+        expect(page.url()).toEqual(url_page);
+    })
+
+    test('Unsuccessful login / Invalide Email', async ({ page }) =>{
         
         const user_acocunt = "invalid_email@gmail"
         
@@ -37,6 +53,7 @@ test.describe("Login / Logout Flow", () => {
         await loginPage.fillEmail(user_acocunt);
         await loginPage.clickLoginButton();
         await loginPage.assertInvalidEmailMessage();
+        expect(page.url()).toEqual(url_page);
     })
 
     test('Successful Login', async ({ page }) =>{
@@ -48,10 +65,8 @@ test.describe("Login / Logout Flow", () => {
         
         homePage = new HomePage(page);
         await homePage.verifyHomePageLoad();
-    })
+        expect(await page.title()).toEqual('Today: Todoist');
 
-    test.afterAll(async ({ page }) =>{    
-        await page.close()
     })
 
 })

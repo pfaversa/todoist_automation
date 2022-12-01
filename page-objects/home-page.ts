@@ -8,49 +8,53 @@ export class HomePage{
     readonly leftProjectPanel: Locator;
     readonly projects_list: Locator;
     readonly project_title: Locator;
-    readonly btnTask: Locator;
+    readonly btnAddTask: Locator;
     readonly taskEditArea: Locator;
     readonly taskTitle: Locator;
     readonly taskDescription: Locator;
-    readonly task_list: Locator;
-    readonly task_alert: Locator;
-    readonly btnMoreMenu: Locator;
+    readonly taskList: Locator;
     
+    readonly modalAlert: Locator;
+    readonly btnModalAlertClose: Locator;
+    
+    readonly btnMoreMenu: Locator;
     readonly menuTaskEdit: Locator;
     readonly btnMenuDeleteTask: Locator;
     
     readonly dialogBox: Locator;
     readonly btnDialogBoxDelete: Locator;
 
-
-    public taskId;
-
     // define constructor
     constructor (page: Page) {
+        this.page = page;
         this.topBar = page.locator('#top_bar_inner'); //Id
-        this.leftBar = page.locator('#left_menu'); // Id
-        this.leftProjectPanel = page.locator('#left-menu-projects-panel'); // Id
-        //this.project_id = page.locator('//ul[@id="projects_list"]//li[@data-id="2302399643"]');
-        this.projects_list = page.locator('#left-menu-projects-panel >> css=#projects_list >> css=[data-type="project_list_item"]');
+        this.leftBar = page.locator('#left_menu_inner'); //Id
         
-        this.project_title = page.locator('data-testid=view_header__h1');
-        this.btnTask = page.locator('"Add task"'); // text
+        // Project Selectors
+        this.leftProjectPanel = page.locator('#left-menu-projects-panel'); //Id
+        this.projects_list = page.locator('ul#projects_list>li'); //css        
+        this.project_title = page.locator('h1[role="heading"]'); //css
+        
+        // Task Selectors
+        this.btnAddTask = page.locator('"Add task"'); // text
         this.taskEditArea = page.locator('.task_editor__editing_area'); // Class
-        this.taskTitle = page.locator('//div[@role="textbox"]')
-        this.taskDescription = page.locator('css=[placeholder="Description"]'); // css
-        this.task_list = page.locator('li.task_list_item.task_list_item--project_hidden');
-        this.task_alert= page.locator('//div[@role="alert"]'); //TODO find a better selector
+        this.taskTitle = page.locator('div[role="textbox"]') //css
+        this.taskDescription = page.locator('textarea[placeholder="Description"]'); //css
+        this.taskList = page.locator('li.task_list_item.task_list_item--project_hidden');
         
-        this.btnMoreMenu = page.locator('//div//button[@data-testid="more_menu"]')
-
+        //  Alert Modal
+        this.modalAlert= page.locator('div[role="alert"]'); //css
+        this.btnModalAlertClose= page.locator('button[aria-label="Close"]');
+        
         // Menu Edit Task
-        this.menuTaskEdit = page.locator('//ul[@role="menu"]'); //TODO find a better selector
+        this.btnMoreMenu = page.locator('button[aria-label="More task actions"]') // css
+        this.menuTaskEdit = page.locator('ul[role="menu"]'); //css
         this.btnMenuDeleteTask = page.locator('role=menuitem[name="Delete task"]') // role selector
         
+
         // Dialo Box
         this.dialogBox = page.locator('role=dialog') // role selector
         this.btnDialogBoxDelete = page.locator('role=button[name="Delete"]') // role selector
-
 
     }
     
@@ -60,74 +64,82 @@ export class HomePage{
         await expect(this.topBar).toBeVisible();
     }
 
-    // Select the project_id from the left project panel
     async selectProject(project_id: string){     
+    // Select project_id from left project panel
         await expect(this.leftProjectPanel).toBeVisible();
-        for(const project of await this.projects_list.elementHandles()){
-            if((await project.getAttribute('data-id') == project_id)){
-                await project.click();
-                break;
+        let count = await this.projects_list.count();
+        // search for 'project_id' into the project list and clicck 
+        for(let i=0; i < count; i++){
+            if(await this.projects_list.nth(i).getAttribute('data-id') == project_id){
+                await this.projects_list.nth(i).click();
+                break
             }
         }
     }
 
     async returnPorjectTitleSelected(){
         await this.project_title.isVisible();
-        return this.project_title.textContent();
+        return (this.project_title.textContent());
     }
 
-    async addNewTaskOnPorjectSelected(task_title: string, task_description: string){
-        
-        // click the task button at the end of the page
-        await this.btnTask.last().click();
-        // validate elements status
-        await expect(this.taskEditArea).toBeVisible();
-        await expect(this.taskTitle).toBeVisible();
-        await expect(this.btnTask).toBeDisabled();
-        
+    async clickOnAddTaskButton(){
+        // click on Add Task button 
+        await this.btnAddTask.isVisible;
+        await this.btnAddTask.isEnabled();
+        await this.btnAddTask.click();
+    }
+
+    async inputTaskTitle(task_title: string){
+        await this.taskTitle.isVisible();
+        await this.taskTitle.isEnabled();
         await this.taskTitle.fill(task_title);
-        await this.taskDescription.fill(task_description)
-        await expect(this.btnTask).toBeEnabled();
-        await this.btnTask.click();
+        expect(await this.taskTitle.textContent()).toEqual(task_title);
+    }
 
-        await this.task_alert.waitFor({state:'visible'});
-        await this.task_alert.waitFor({state:'hidden'});
+    async inputTaskDescription(task_description: string){
+        await this.taskDescription.isVisible();
+        await this.taskDescription.isEnabled();
+        await this.taskDescription.fill(task_description);
+        expect(await this.taskDescription.textContent()).toEqual(task_description);
+
+    }
+    
+    async fillTaskInputFields(task_title: string, task_description: string){
         
-        this.getNewTaskId();
+        await this.taskEditArea.isVisible();
+        await this.taskEditArea.isEnabled();
+        await this.inputTaskTitle(task_title);
+        await this.inputTaskDescription(task_description);
+    
+        await this.clickOnAddTaskButton();
+        await this.modalAlert.waitFor({state:'visible'});
+        const response = await this.page.waitForResponse(response => response.url().includes('/sync') && response.status() === 200);
+        await this.btnModalAlertClose.click();
+        await this.modalAlert.waitFor({state:'hidden'});
+
     }
 
-    async returnTotalTasksProject(){
-        return (await this.task_list.elementHandles()).length;
+    async returnTotalProjectTasks(){
+        return (await this.taskList.count());
     }
 
-    async getNewTaskId(){
-        const task_list = await this.task_list.elementHandles();
-        this.taskId = await task_list[await this.returnTotalTasksProject()-1].getAttribute('id') // format taskId: task-1234567890
-        console.log(this.taskId);
-    }
+    async deleteLastTaskInList(){
 
-    async verifyNewTaskAdded(){
-        //TODO
-    }
+        let lastTaskTitle = await this.taskList.last().locator('//div[contains(@class,"task_content")]').textContent();
+        await this.taskList.last().hover();
+        await this.taskList.locator('//div//button[@data-testid="more_menu"]').last().click();
 
-    async deleteTask(){
-
-        for(const task of await this.task_list.elementHandles()){
-            if((await task.getAttribute('id') == this.taskId)){
-                //console.log(this.taskId.locator(this.btnMoreMenu))
-                //console.log(await this.task_list.locator('//div//button[@data-testid="more_menu"]'))
-                await this.task_list.locator('//div//button[@data-testid="more_menu"]').click();
-                //await this.task_list.locator(this.btnMoreMenu).click();
-                break;
-            }
-        }
-        
         await this.menuTaskEdit.isVisible();
+        await this.btnMenuDeleteTask.isEnabled();
         await this.btnMenuDeleteTask.click();
-        await this.menuTaskEdit.isHidden();
-
-        await this.dialogBox.isVisible();
+        
+        await this.dialogBox.waitFor({state:'visible'});
+        expect(await this.dialogBox.textContent()).toContain(lastTaskTitle);
+        await this.btnDialogBoxDelete.isVisible();
         await this.btnDialogBoxDelete.click();
-        await this.dialogBox.isHidden();
+
+        const response = await this.page.waitForResponse(response => response.url().includes('/sync') && response.status() === 200);
+        await this.dialogBox.waitFor({state:'hidden'});
+
     }
 }

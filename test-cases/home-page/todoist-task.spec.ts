@@ -1,49 +1,102 @@
 import {test, expect} from '@playwright/test';
 import {LoginPage} from '../../page-objects/login-page';
 import { HomePage } from '../../page-objects/home-page';
-import dotenv from 'dotenv'
 import path from 'path'
 
 const doteenv = require('dotenv').config({path:path.resolve('../todoist_automation/todoist_variables.env')}).parsed
 let user_name = doteenv.todoist_username
 let user_pass = doteenv.todoist_password
 let project_id = doteenv.todoist_id_base_project
+let project_title = doteenv.todoist_title_base_project
+let url_page = doteenv.todoist_url
+let new_total_tasks = doteenv.total_tasks_to_add
 
-test.describe.only('Task Manager Flow', () =>{
+test.describe('Task Manager Flow', () =>{
 
     let loginPage: LoginPage
     let homePage: HomePage
     
     test.beforeEach(async ({ page }) =>{
         loginPage = new LoginPage(page);
-        await loginPage.gotoLoginPage();
+        await loginPage.gotoLoginPage(url_page);
         await loginPage.fillEmail(user_name);
         await loginPage.fillPassword(user_pass);
         await loginPage.clickLoginButton();
+ 
+    })
+
+    test.afterAll(async ({ page }) =>{    
+        await page.close()
+    })
+
+    test('Add A New Task In Porject And Delete It', async ({ page }) =>{
+        const randoTitle = Math.random().toString(36).substring(2);
+        const rnadoDescr = Math.random().toString(36).substring(2);
+
         homePage = new HomePage(page);
         await homePage.verifyHomePageLoad();
 
+        await homePage.selectProject(project_id)
+        expect(await homePage.returnPorjectTitleSelected()).toEqual(project_title);
+
+        // get total project tasks before add the new one
+        let before_total_tasks = await homePage.returnTotalProjectTasks();
+
+        await homePage.clickOnAddTaskButton();
+        await homePage.fillTaskInputFields('Task: '+randoTitle,'Description: ' + rnadoDescr);
+        
+        // get total project tasks afer add the new one
+        let after_total_tasks = await homePage.returnTotalProjectTasks();
+
+        // verify project has one more task 
+        expect(before_total_tasks < after_total_tasks).toBeTruthy();
+
+        // delete last task added
+        await homePage.deleteLastTaskInList();
+
+        // get total project tasks after delete one
+        let finally_total_tasks = await homePage.returnTotalProjectTasks();
+
+        // verify project has one less task 
+        expect(before_total_tasks == finally_total_tasks).toBeTruthy();
+
+
     })
 
-    test.only('Add A New Task In Base Porject And Delete It', async ({ page }) =>{
+    test("Add 10 Tasks In Project Then Delete Them", async ({ page }) =>{
 
-        
-       
+        homePage = new HomePage(page);
+        await homePage.verifyHomePageLoad();
+
         await homePage.selectProject(project_id)
-        expect(await homePage.returnPorjectTitleSelected()).toBe('Cook Pasta - Step-by-Step');
+        expect(await homePage.returnPorjectTitleSelected()).toEqual(project_title);
 
-        const before_total_tasks = await homePage.returnTotalTasksProject();
-        //await page.pause();
-        await homePage.addNewTaskOnPorjectSelected('last task','last task description');
-        
-        const after_total_tasks = await homePage.returnTotalTasksProject();
+        homePage.clickOnAddTaskButton();
 
-        // verify there is one more task 
+        // get total project tasks before add the new ones
+        let before_total_tasks = await homePage.returnTotalProjectTasks();
+  
+        for(let i=1; i<=new_total_tasks;i++){
+            const randoTitle = Math.random().toString(36).substring(2);
+            const rnadoDescr = Math.random().toString(36).substring(2);
+            await homePage.fillTaskInputFields('Task '+i+': '+randoTitle,'Description--->' + rnadoDescr);
+        }
+
+        // get total project tasks afer add the new ones
+        let after_total_tasks = await homePage.returnTotalProjectTasks();
+
+        // verify project has one more task 
         expect(before_total_tasks < after_total_tasks).toBeTruthy();
-        await page.pause();
-        // delete last task added
-        await homePage.deleteTask();
 
+        for(let i=1; i<=new_total_tasks;i++){
+            await homePage.deleteLastTaskInList();
+        }
+
+        // get total project tasks after delete one
+        let finally_total_tasks = await homePage.returnTotalProjectTasks();
+
+        // verify project has one less task 
+        expect(before_total_tasks == finally_total_tasks).toBeTruthy();
 
     })
 

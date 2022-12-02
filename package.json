@@ -6,7 +6,8 @@
   "scripts": {
     "tests:chrome": "playwright test --config=playwright.config.ts --project=Chromium --reporter=html",
     "tests:webkit": "playwright test --config=playwright.config.ts --project=Webkit --reporter=html",
-    "tests:firefox": "playwright test --config=playwright.config.ts --project=Firefox --reporter=html"
+    "tests:firefox": "playwright test --config=playwright.config.ts --project=Firefox --reporter=html",
+    "tests:smokeChrome": "playwright test --config=playwright.config.ts --project=Chromium --reporter=html --grep @smoke"
   },
   "repository": {
     "type": "git",

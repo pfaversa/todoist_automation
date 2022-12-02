@@ -8,3 +8,4 @@ todoist_variables.env
 # Folders
 node_modules/*
 playwright-report/*
+test-results/*

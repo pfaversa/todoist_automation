@@ -10,7 +10,7 @@ let user_pass = doteenv.todoist_password
 let randomPassword = (Math.random() + 1).toString(36);
 let url_page = doteenv.todoist_url
 
-test.describe.only("Login / Logout Flow", () => {
+test.describe("Login / Logout Flow", () => {
     let loginPage: LoginPage
     let homePage: HomePage
     
@@ -22,7 +22,7 @@ test.describe.only("Login / Logout Flow", () => {
         await page.close()
     })
 
-    test('Unsuccessful login / Wrong Email Account', async ({ page }) =>{
+    test('Unsuccessful login / Wrong Email Account @smoke', async ({ page }) =>{
         
         const user_acocunt = "non_existent@gmail.com"
   

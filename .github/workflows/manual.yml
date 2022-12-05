@@ -18,7 +18,7 @@ jobs:
           envkey_todoist_password: ${{secrets.TODOIST_PASSWORD}}
           envkey_todoist_id_base_project: ${{secrets.TODOIST_ID_BASE_PROJECT}}
           envkey_todoist_title_base_project: ${{secrets.TODOIST_TITLE_BASE_PROJECT}}
-          directory: ../todoist_automation/
+          directory: ./
           file_name: todoist_variables.env
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2

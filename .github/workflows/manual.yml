@@ -11,15 +11,15 @@ jobs:
   e2e-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Make envfile
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_todoist_username: ${{secrets.TODOIST_USERNAME}}
-          envkey_todoist_password: ${{secrets.TODOIST_PASSWORD}}
-          envkey_todoist_id_base_project: ${{secrets.TODOIST_ID_BASE_PROJECT}}
-          envkey_todoist_title_base_project: ${{secrets.TODOIST_TITLE_BASE_PROJECT}}
-          directory: ./
-          file_name: todoist_variables.env
+      - name: 'Create env file'
+        run: |
+          touch todoist_variables.env
+          echo todoist_url="https://todoist.com/auth/login" >> todoist_variables.env
+          echo todoist_username=${{ secrets.TODOIST_USERNAME }} >> todoist_variables.env
+          echo todoist_password=${{ secrets.TODOIST_PASSWORD }} >> todoist_variables.env
+          echo todoist_id_base_project=${{ secrets.TODOIST_ID_BASE_PROJECT }} >> todoist_variables.env
+          echo todoist_title_base_project=${{ secrets.TODOIST_TITLE_BASE_PROJECT }} >> todoist_variables.env
+          cat todoist_variables.env
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
         with:

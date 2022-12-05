@@ -22,10 +22,10 @@ jobs:
       - name: Make envfile
         uses: todoist_automation/create-envfile@v1.3
         with:
-          envkey_todoist_username: ${{TODOIST_USERNAME}}
-          envkey_todoist_password: ${{TODOIST_PASSWORD}}
-          envkey_todoist_id_base_project: ${{TODOIST_ID_BASE_PROJECT}}
-          envkey_todoist_title_base_project: ${{TODOIST_TITLE_BASE_PROJECT}}
+          envkey_todoist_username: ${{secrets.TODOIST_USERNAME}}
+          envkey_todoist_password: ${{secrets.TODOIST_PASSWORD}}
+          envkey_todoist_id_base_project: ${{secrets.TODOIST_ID_BASE_PROJECT}}
+          envkey_todoist_title_base_project: ${{secrets.TODOIST_TITLE_BASE_PROJECT}}
           directory: todoist_automation
           file_name: todoist_variables.env
       - name: Run your tests

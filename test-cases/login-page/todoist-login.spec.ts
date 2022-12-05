@@ -4,11 +4,11 @@ import dotenv from 'dotenv'
 import path from 'path'
 import { HomePage } from '../../page-objects/home-page';
 
-const doteenv = require('dotenv').config({path:path.resolve('../todoist_automation/todoist_variables.env')}).parsed
-let user_name = doteenv.todoist_username
-let user_pass = doteenv.todoist_password
+dotenv.config({ path: path.resolve(__dirname, '..', 'todoist_variables.env') }).parsed;
+let user_name = process.env.todoist_username!;
+let user_pass = process.env.todoist_password!;
 let randomPassword = (Math.random() + 1).toString(36);
-let url_page = doteenv.todoist_url
+let url_page = process.env.todoist_url!;
 
 test.describe("Login / Logout Flow", () => {
     let loginPage: LoginPage

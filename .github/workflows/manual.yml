@@ -20,12 +20,12 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps
       - name: Make envfile
-        uses: SpicyPizza/create-envfile@v1.3
+        uses: todoist_automation/create-envfile@v1.3
         with:
-          todoist_username: ${{TODOIST_USERNAME}}
-          todoist_password: ${{TODOIST_PASSWORD}}
-          todoist_id_base_project: ${{TODOIST_ID_BASE_PROJECT}}
-          todoist_title_base_project: ${{TODOIST_TITLE_BASE_PROJECT}}
+          envkey_todoist_username: ${{TODOIST_USERNAME}}
+          envkey_todoist_password: ${{TODOIST_PASSWORD}}
+          envkey_todoist_id_base_project: ${{TODOIST_ID_BASE_PROJECT}}
+          envkey_todoist_title_base_project: ${{TODOIST_TITLE_BASE_PROJECT}}
           directory: todoist_automation
           file_name: todoist_variables.env
       - name: Run your tests

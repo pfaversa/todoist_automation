@@ -15,7 +15,7 @@ jobs:
         run: |
           touch todoist_variables.env
           echo todoist_url="https://todoist.com/auth/login" >> todoist_variables.env
-          echo todoist_username=pablo.aversa@wizeline.com todoist_variables.env
+          echo todoist_username=pablo.aversa@wizeline.com >> todoist_variables.env
           echo todoist_password= ${{ secrets.TODOIST_PASSWORD }} >> todoist_variables.env
           echo todoist_id_base_project= ${{ secrets.TODOIST_ID_BASE_PROJECT }} >> todoist_variables.env
           echo todoist_title_base_project= ${{ secrets.TODOIST_TITLE_BASE_PROJECT }} >> todoist_variables.env

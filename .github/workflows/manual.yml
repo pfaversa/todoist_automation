@@ -20,7 +20,7 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps
       - name: Make envfile
-        uses: todoist_automation/create-envfile@v1.3
+        uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_todoist_username: ${{secrets.TODOIST_USERNAME}}
           envkey_todoist_password: ${{secrets.TODOIST_PASSWORD}}

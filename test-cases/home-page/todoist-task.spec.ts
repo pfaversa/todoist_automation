@@ -30,7 +30,7 @@ test.describe('Task Manager Flow', () =>{
         await page.close()
     })
 
-    test('Add A New Task In Porject And Delete It @smoke', async ({ page }) =>{
+    test('Add A New Task In Porject And Delete It', async ({ page }) =>{
         const randoTitle = Math.random().toString(36).substring(2);
         const rnadoDescr = Math.random().toString(36).substring(2);
 

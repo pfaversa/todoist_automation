@@ -54,7 +54,7 @@ test.describe.parallel("Login / Logout Flow", () => {
         expect(page.url()).toEqual(url_page);
     })
 
-    test('Successful Login', async ({ page }) =>{
+    test('Successful Login @smoke', async ({ page }) =>{
         
         await loginPage.gotoLoginPage(url_page);
         await loginPage.fillEmail(user_name);

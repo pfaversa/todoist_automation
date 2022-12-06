@@ -10,7 +10,7 @@ let project_title = process.env.TODOIST_TITLE_BASE_PROJECT!
 let url_page = process.env.TODOIST_URL!
 let new_total_tasks = process.env.TODOIST_TOTAL_TASKS_TO_ADD!
 
-test.describe.only('Task Manager Flow', () =>{
+test.describe('Task Manager Flow', () =>{
 
     let loginPage: LoginPage
     let homePage: HomePage
@@ -28,7 +28,7 @@ test.describe.only('Task Manager Flow', () =>{
         await page.close()
     })
 
-    test('Add A New Task In Porject And Delete It @smoke', async ({ page }) =>{
+    test('Add A New Task In Porject And Delete It', async ({ page }) =>{
         const randoTitle = Math.random().toString(36).substring(2);
         const rnadoDescr = Math.random().toString(36).substring(2);
 

@@ -4,7 +4,9 @@ import dotenv from 'dotenv'
 import path from 'path'
 import { HomePage } from '../../page-objects/home-page';
 
-dotenv.config({ path: path.resolve(__dirname, '..', 'todoist_variables.env') }).parsed;
+//dotenv.config({ path: path.resolve(__dirname, '..', 'todoist_variables.env') }).parsed;
+require('dotenv').config();
+console.log(process.env);
 let user_name = process.env.todoist_username!;
 let user_pass = process.env.todoist_password!;
 let randomPassword = (Math.random() + 1).toString(36);

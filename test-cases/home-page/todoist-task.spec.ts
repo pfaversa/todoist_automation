@@ -1,15 +1,14 @@
 import {test, expect} from '@playwright/test';
 import {LoginPage} from '../../page-objects/login-page';
 import { HomePage } from '../../page-objects/home-page';
-import path from 'path'
 
-const doteenv = require('dotenv').config({path:path.resolve('../todoist_automation/todoist_variables.env')}).parsed
-let user_name = doteenv.todoist_username
-let user_pass = doteenv.todoist_password
-let project_id = doteenv.todoist_id_base_project
-let project_title = doteenv.todoist_title_base_project
-let url_page = doteenv.todoist_url
-let new_total_tasks = doteenv.total_tasks_to_add
+require('dotenv').config();
+let user_name = process.env.TODOIST_USERNAME!
+let user_pass = process.env.TODOIST_PASSWORD!
+let project_id = process.env.TODOIST_ID_BASE_PROJECT!
+let project_title = process.env.TODOIST_TITLE_BASE_PROJECT!
+let url_page = process.env.TODOIST_URL!
+let new_total_tasks = process.env.TODOIST_TOTAL_TASKS_TO_ADD!
 
 test.describe('Task Manager Flow', () =>{
 

@@ -9,18 +9,27 @@ on: workflow_dispatch
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   e2e-tests:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '18.12.1'
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo TODOIST_URL=${{ secrets.TODOIST_URL }} >> .env
+          echo TODOIST_USERNAME=${{ secrets.TODOIST_USERNAME }} >> .env
+          echo TODOIST_PASSWORD= ${{ secrets.TODOIST_PASSWORD }} >> .env
+          echo TODOIST_ID_BASE_PROJECT= ${{ secrets.TODOIST_ID_BASE_PROJECT }} >> .env
+          echo TODOIST_TITLE_BASE_PROJECT= ${{ secrets.TODOIST_TITLE_BASE_PROJECT }} >> .env
+          cat .env
       - name: Install dependencies
         run: npm ci
       - name: Install Playwright
         run: npx playwright install --with-deps
       - name: Run your tests
-        run: npx playwright test
+        run: npm run tests:smokeChromium
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v2

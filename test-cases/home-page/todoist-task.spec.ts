@@ -1,16 +1,14 @@
 import {test, expect} from '@playwright/test';
 import {LoginPage} from '../../page-objects/login-page';
 import { HomePage } from '../../page-objects/home-page';
-import dotenv from 'dotenv'
-import path from 'path'
 
-dotenv.config({ path: path.resolve(__dirname, '..', '../todoist_variables.env') }).parsed
-let user_name = process.env.todoist_username!
-let user_pass = process.env.todoist_password!
-let project_id = process.env.todoist_id_base_project!
-let project_title = process.env.todoist_title_base_project!
-let url_page = process.env.todoist_url!
-let new_total_tasks = process.env.total_tasks_to_add!
+require('dotenv').config();
+let user_name = process.env.TODOIST_USERNAME!
+let user_pass = process.env.TODOIST_PASSWORD!
+let project_id = process.env.TODOIST_ID_BASE_PROJECT!
+let project_title = process.env.TODOIST_TITLE_BASE_PROJECT!
+let url_page = process.env.TODOIST_URL!
+let new_total_tasks = process.env.TODOIST_TOTAL_TASKS_TO_ADD!
 
 test.describe('Task Manager Flow', () =>{
 
@@ -30,7 +28,7 @@ test.describe('Task Manager Flow', () =>{
         await page.close()
     })
 
-    test('Add A New Task In Porject And Delete It', async ({ page }) =>{
+    test('Add A New Task In Porject And Delete It @smoke', async ({ page }) =>{
         const randoTitle = Math.random().toString(36).substring(2);
         const rnadoDescr = Math.random().toString(36).substring(2);
 

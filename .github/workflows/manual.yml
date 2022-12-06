@@ -20,8 +20,6 @@ jobs:
           echo todoist_id_base_project= ${{ secrets.TODOIST_ID_BASE_PROJECT }} >> todoist_variables.env
           echo todoist_title_base_project= ${{ secrets.TODOIST_TITLE_BASE_PROJECT }} >> todoist_variables.env
           cat todoist_variables.env
-      - run: ls
-      - run: PWD
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
         with:

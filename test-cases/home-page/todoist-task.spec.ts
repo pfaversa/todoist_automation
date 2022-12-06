@@ -28,7 +28,7 @@ test.describe('Task Manager Flow', () =>{
         await page.close()
     })
 
-    test('Add A New Task In Porject And Delete It', async ({ page }) =>{
+    test.only('Add A New Task In Porject And Delete It @smoke', async ({ page }) =>{
         const randoTitle = Math.random().toString(36).substring(2);
         const rnadoDescr = Math.random().toString(36).substring(2);
 
@@ -40,13 +40,13 @@ test.describe('Task Manager Flow', () =>{
 
         // get total project tasks before add the new one
         let before_total_tasks = await homePage.returnTotalProjectTasks();
-
+        console.log("get total project tasks before add the new one -->" +before_total_tasks);
         await homePage.clickOnAddTaskButton();
         await homePage.fillTaskInputFields('Task: '+randoTitle,'Description: ' + rnadoDescr);
         
         // get total project tasks afer add the new one
         let after_total_tasks = await homePage.returnTotalProjectTasks();
-
+        console.log("get total project tasks afer add the new one -->" +after_total_tasks);
         // verify project has one more task 
         expect(before_total_tasks < after_total_tasks).toBeTruthy();
 
@@ -55,7 +55,7 @@ test.describe('Task Manager Flow', () =>{
 
         // get total project tasks after delete one
         let finally_total_tasks = await homePage.returnTotalProjectTasks();
-
+        console.log("get total project tasks finally add the new one -->" +finally_total_tasks);
         // verify project has one less task 
         expect(before_total_tasks == finally_total_tasks).toBeTruthy();
 

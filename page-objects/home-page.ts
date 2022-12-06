@@ -113,7 +113,7 @@ export class HomePage{
     
         await this.clickOnAddTaskButton();
         await this.modalAlert.waitFor({state:'visible'});
-        const response = await this.page.waitForResponse(response => response.url().includes('/sync') && response.status() === 200);
+        //const response = await this.page.waitForResponse(response => response.url().includes('/sync') && response.status() === 200);
         await this.btnModalAlertClose.click();
         await this.modalAlert.waitFor({state:'hidden'});
 
@@ -138,7 +138,7 @@ export class HomePage{
         await this.btnDialogBoxDelete.isVisible();
         await this.btnDialogBoxDelete.click();
 
-        const response = await this.page.waitForResponse(response => response.url().includes('/sync') && response.status() === 200);
+        //const response = await this.page.waitForResponse(response => response.url().includes('/sync') && response.status() === 200);
         await this.dialogBox.waitFor({state:'hidden'});
 
     }

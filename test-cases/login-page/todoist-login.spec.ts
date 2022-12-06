@@ -1,17 +1,14 @@
 import {test, expect} from '@playwright/test';
 import {LoginPage} from '../../page-objects/login-page';
-import dotenv from 'dotenv'
-import path from 'path'
 import { HomePage } from '../../page-objects/home-page';
 
 require('dotenv').config();
 let user_name = process.env.TODOIST_USERNAME!;
 let user_pass = process.env.TODOIST_PASSWORD!;
-let randomPassword = (Math.random() + 1).toString(36);
 let url_page = process.env.TODOIST_URL!;
-console.log(user_name+"-"+user_pass+"-"+url_page) // TODO: Remove this line
+let randomPassword = (Math.random() + 1).toString(36);
 
-test.describe("Login / Logout Flow", () => {
+test.describe.parallel("Login / Logout Flow", () => {
     let loginPage: LoginPage
     let homePage: HomePage
     

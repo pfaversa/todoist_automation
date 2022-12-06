@@ -9,6 +9,7 @@ let user_name = process.env.todoist_username!;
 let user_pass = process.env.todoist_password!;
 let randomPassword = (Math.random() + 1).toString(36);
 let url_page = process.env.todoist_url!;
+console.log(user_name+"-"+user_pass+"-"+url_page) // TODO: Remove this line
 
 test.describe("Login / Logout Flow", () => {
     let loginPage: LoginPage

@@ -10,7 +10,7 @@ let project_title = process.env.TODOIST_TITLE_BASE_PROJECT!
 let url_page = process.env.TODOIST_URL!
 let new_total_tasks = process.env.TODOIST_TOTAL_TASKS_TO_ADD!
 
-test.describe('Task Manager Flow', () =>{
+test.describe.only('Task Manager Flow', () =>{
 
     let loginPage: LoginPage
     let homePage: HomePage
@@ -75,7 +75,7 @@ test.describe('Task Manager Flow', () =>{
         // get total project tasks before add the new ones
         let before_total_tasks = await homePage.returnTotalProjectTasks();
   
-        for(let i=1; i<=new_total_tasks;i++){
+        for(let i=1; i<= Number(new_total_tasks);i++){
             const randoTitle = Math.random().toString(36).substring(2);
             const rnadoDescr = Math.random().toString(36).substring(2);
             await homePage.fillTaskInputFields('Task '+i+': '+randoTitle,'Description--->' + rnadoDescr);
@@ -87,7 +87,7 @@ test.describe('Task Manager Flow', () =>{
         // verify project has one more task 
         expect(before_total_tasks < after_total_tasks).toBeTruthy();
 
-        for(let i=1; i<=new_total_tasks;i++){
+        for(let i=1; i<=Number(new_total_tasks);i++){
             await homePage.deleteLastTaskInList();
         }
 

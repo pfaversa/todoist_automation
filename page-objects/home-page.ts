@@ -38,8 +38,8 @@ export class HomePage{
         // Task Selectors
         this.btnAddTask = page.locator('"Add task"'); // text
         this.taskEditArea = page.locator('.task_editor__editing_area'); // Class
-        this.taskTitle = page.locator('div[role="textbox"]') //css
-        this.taskDescription = page.locator('textarea[placeholder="Description"]'); //css
+        this.taskTitle = page.locator('div[aria-label="Task name"]') //css
+        this.taskDescription = page.locator('div[aria-label="Description"]'); //css
         this.taskList = page.locator('li.task_list_item.task_list_item--project_hidden');
         
         //  Alert Modal

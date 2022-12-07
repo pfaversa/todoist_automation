@@ -36,20 +36,8 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps
       # run smoke tests on Chromium
-      - name: Run Smoke tests on Chromium
-        run: npm run tests:smokeChromium
-      # run smoke tests on Firefox
-      - name: Run Smoke tests on Firefox
-        run: npm run tests:smokeFirefox
-      # run smoke tests on Webkit
-      - name: Run Smoke tests on Webkit
-        run: npm run tests:smokeWebkit
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: playwright-report
-          path: playwright-report
+      - name: Run Smoke tests on Chrome/Firefox/Safari
+        run: npm run tests:smokeTests
       # Slack Integration - Send message to #qa-challenge channel
       - name: Slack Notification
         uses: act10ns/slack@v1

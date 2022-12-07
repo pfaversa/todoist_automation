@@ -15,6 +15,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '18.12.1'
+      # create .env file with secrets 
       - name: 'Create env file'
         run: |
           touch .env
@@ -24,6 +25,7 @@ jobs:
           echo TODOIST_ID_BASE_PROJECT= ${{ secrets.TODOIST_ID_BASE_PROJECT }} >> .env
           echo TODOIST_TITLE_BASE_PROJECT= ${{ secrets.TODOIST_TITLE_BASE_PROJECT }} >> .env
           cat .env
+      # create the playwright-report folder to uploda the test result
       - name: Create dir
         run: |
           mkdir playwright-report
@@ -31,8 +33,27 @@ jobs:
         run: npm ci
       - name: Install Playwright
         run: npx playwright install --with-deps
-      - name: Run your tests
+      # run smoke tests on Chromium
+      - name: Run Smoke tests on Chromium
         run: npm run tests:smokeChromium
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: playwright-report
+          path: playwright-report
+      # run smoke tests on Firefox
+      - name: Run Smoke tests on Firefox
+        run: npm run tests:smokeFirefox
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: playwright-report
+          path: playwright-report
+      # run smoke tests on Webkit
+      - name: Run Smoke tests on Webkit
+        run: npm run tests:smokeWebkit
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v2

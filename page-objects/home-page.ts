@@ -71,6 +71,8 @@ export class HomePage{
         // search for 'project_id' into the project list and clicck 
         for(let i=0; i < count; i++){
             if(await this.projects_list.nth(i).getAttribute('data-id') == project_id){
+                await this.projects_list.nth(i).isVisible();
+                await this.projects_list.nth(i).isEnabled();
                 await this.projects_list.nth(i).click();
                 break
             }
@@ -92,14 +94,16 @@ export class HomePage{
     async inputTaskTitle(task_title: string){
         await this.taskTitle.isVisible();
         await this.taskTitle.isEnabled();
-        await this.taskTitle.fill(task_title);
+        await this.taskTitle.isEditable();
+        await this.taskTitle.type(task_title);
         expect(await this.taskTitle.textContent()).toEqual(task_title);
     }
 
     async inputTaskDescription(task_description: string){
         await this.taskDescription.isVisible();
         await this.taskDescription.isEnabled();
-        await this.taskDescription.fill(task_description);
+        await this.taskDescription.isEditable();
+        await this.taskDescription.type(task_description);
         expect(await this.taskDescription.textContent()).toEqual(task_description);
 
     }
@@ -113,7 +117,7 @@ export class HomePage{
     
         await this.clickOnAddTaskButton();
         await this.modalAlert.waitFor({state:'visible'});
-        const response = await this.page.waitForResponse(response => response.url().includes('/sync') && response.status() === 200);
+        await this.page.waitForResponse(response => response.url().includes('/sync') && response.status() === 200);
         await this.btnModalAlertClose.click();
         await this.modalAlert.waitFor({state:'hidden'});
 
@@ -125,9 +129,11 @@ export class HomePage{
 
     async deleteLastTaskInList(){
 
+        await this.taskList.last().isVisible();
+        await this.taskList.last().isEnabled()
         let lastTaskTitle = await this.taskList.last().locator('//div[contains(@class,"task_content")]').textContent();
-        await this.taskList.last().hover();
-        await this.taskList.locator('//div//button[@data-testid="more_menu"]').last().click();
+        await this.taskList.last().focus();
+        await this.taskList.last().click({button : 'right'});
 
         await this.menuTaskEdit.isVisible();
         await this.btnMenuDeleteTask.isEnabled();
@@ -138,7 +144,7 @@ export class HomePage{
         await this.btnDialogBoxDelete.isVisible();
         await this.btnDialogBoxDelete.click();
 
-        const response = await this.page.waitForResponse(response => response.url().includes('/sync') && response.status() === 200);
+        await this.page.waitForResponse(response => response.url().includes('/sync') && response.status() === 200);
         await this.dialogBox.waitFor({state:'hidden'});
 
     }

@@ -1,11 +1,11 @@
 import { PlaywrightTestConfig } from "@playwright/test";
 
 const config: PlaywrightTestConfig = {
-    timeout: 6000000,
+    timeout: 60000,
     retries: 0,
     use: {
         headless: false,
-        //viewport:{width:1920,height:1080},
+        viewport:{width:1728,height:900},
         video: 'off',
         screenshot: 'only-on-failure',
     },

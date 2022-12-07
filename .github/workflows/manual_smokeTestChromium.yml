@@ -24,6 +24,9 @@ jobs:
           echo TODOIST_ID_BASE_PROJECT= ${{ secrets.TODOIST_ID_BASE_PROJECT }} >> .env
           echo TODOIST_TITLE_BASE_PROJECT= ${{ secrets.TODOIST_TITLE_BASE_PROJECT }} >> .env
           cat .env
+      - name: Create dir
+        run: |
+          mkdir playwright-report
       - name: Install dependencies
         run: npm ci
       - name: Install Playwright

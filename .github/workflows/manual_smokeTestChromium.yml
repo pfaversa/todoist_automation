@@ -38,21 +38,9 @@ jobs:
       # run smoke tests on Chromium
       - name: Run Smoke tests on Chromium
         run: npm run tests:smokeChromium
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: playwright-report
-          path: playwright-report
       # run smoke tests on Firefox
       - name: Run Smoke tests on Firefox
         run: npm run tests:smokeFirefox
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: playwright-report
-          path: playwright-report
       # run smoke tests on Webkit
       - name: Run Smoke tests on Webkit
         run: npm run tests:smokeWebkit
@@ -62,3 +50,11 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report
+      # Slack Integration - Send message to #qa-challenge channel
+      - name: Slack Notification
+        uses: act10ns/slack@v1
+        with: 
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps)}}
+          channel: '#qa-challenge'
+        if: always()

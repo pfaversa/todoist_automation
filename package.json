@@ -7,7 +7,9 @@
     "tests:chrome": "playwright test --config=playwright.config.ts --project=Chromium --reporter=html",
     "tests:webkit": "playwright test --config=playwright.config.ts --project=Webkit --reporter=html",
     "tests:firefox": "playwright test --config=playwright.config.ts --project=Firefox --reporter=html",
-    "tests:smokeChromium": "playwright test --config=playwright.config.ts --project=SmokeChromium --reporter=html --grep @smoke"
+    "tests:smokeChromium": "playwright test --config=playwright.config.ts --project=SmokeChromium --reporter=html --grep @smoke",
+    "tests:smokeFirefox": "playwright test --config=playwright.config.ts --project=SmokeFirefox --reporter=html --grep @smoke",
+    "tests:smokeWebkit": "playwright test --config=playwright.config.ts --project=SmokeWebkit --reporter=html --grep @smoke"
   },
   "repository": {
     "type": "git",

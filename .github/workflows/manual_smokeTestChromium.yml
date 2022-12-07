@@ -31,8 +31,24 @@ jobs:
         run: npm ci
       - name: Install Playwright
         run: npx playwright install --with-deps
-      - name: Run your tests
+      - name: Run Smoke tests on Chromium
         run: npm run tests:smokeChromium
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: playwright-report
+          path: playwright-report
+      - name: Run Smoke tests on Firefox
+        run: npm run tests:smokeFirefox
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: playwright-report
+          path: playwright-report
+      - name: Run Smoke tests on Webkit
+        run: npm run tests:smokeWebkit
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v2

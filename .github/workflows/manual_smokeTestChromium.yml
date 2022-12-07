@@ -35,7 +35,7 @@ jobs:
         run: npm ci
       - name: Install Playwright
         run: npx playwright install --with-deps
-      # run smoke tests on Chromium
+      # run smoke tests on All Browsers
       - name: Run Smoke tests on Chrome/Firefox/Safari
         run: npm run tests:smokeTests
       # Slack Integration - Send message to #qa-challenge channel

@@ -38,6 +38,12 @@ jobs:
       # run smoke tests on All Browsers
       - name: Run Smoke tests on Chrome/Firefox/Safari
         run: npm run tests:smokeTests
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: playwright-report
+          path: playwright-report
+        if: always()
       # Slack Integration - Send message to #qa-challenge channel
       - name: Slack Notification
         uses: act10ns/slack@v1

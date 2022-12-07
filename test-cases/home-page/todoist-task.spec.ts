@@ -78,7 +78,7 @@ test.describe('Task Manager Flow', () =>{
         for(let i=1; i<= Number(new_total_tasks);i++){
             const randoTitle = Math.random().toString(36).substring(2);
             const rnadoDescr = Math.random().toString(36).substring(2);
-            await homePage.fillTaskInputFields('Task '+i+': '+randoTitle,'Description--->' + rnadoDescr);
+            await homePage.fillTaskInputFields('Task '+i+': '+randoTitle,'Description:' + rnadoDescr);
         }
 
         // get total project tasks afer add the new ones

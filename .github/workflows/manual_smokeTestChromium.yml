@@ -44,7 +44,7 @@ jobs:
           name: playwright-report
           path: playwright-report
         if: always()
-      # Commit Smoke Test status #
+      ### Commit Smoke Test status ###
       - name: Tests Passed
         if: ${{ success() }}
         # set the merge commit status check

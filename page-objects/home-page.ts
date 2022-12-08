@@ -68,7 +68,7 @@ export class HomePage{
     // Select project_id from left project panel
         await expect(this.leftProjectPanel).toBeVisible();
         let count = await this.projects_list.count();
-        // search for 'project_id' into the project list and clicck 
+        // search for 'project_id' into the project list and  then click on it 
         for(let i=0; i < count; i++){
             if(await this.projects_list.nth(i).getAttribute('data-id') == project_id){
                 await this.projects_list.nth(i).isVisible();

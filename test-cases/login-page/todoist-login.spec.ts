@@ -14,6 +14,7 @@ test.describe.parallel("Login / Logout Flow", () => {
     
     test.beforeEach(async ({ page }) =>{    
         loginPage = new LoginPage(page);
+        await loginPage.gotoLoginPage(url_page);
     })
 
     test.afterAll(async ({ page }) =>{    
@@ -23,8 +24,7 @@ test.describe.parallel("Login / Logout Flow", () => {
     test('Unsuccessful login / Wrong Email Account @smoke', async ({ page }) =>{
         
         const user_acocunt = "non_existent@gmail.com"
-  
-        await loginPage.gotoLoginPage(url_page);
+
         await loginPage.fillEmail(user_acocunt);
         await loginPage.fillPassword(randomPassword)
         await loginPage.clickLoginButton();
@@ -35,8 +35,7 @@ test.describe.parallel("Login / Logout Flow", () => {
     test('Unsuccessful login / Password Missing', async ({ page }) =>{
         
         const user_acocunt = "test_emial@gmail.com"
-  
-        await loginPage.gotoLoginPage(url_page);
+          
         await loginPage.fillEmail(user_acocunt);
         await loginPage.clickLoginButton();
         await loginPage.assertWrongCredentialsMessage()
@@ -47,7 +46,6 @@ test.describe.parallel("Login / Logout Flow", () => {
         
         const user_acocunt = "invalid_email@gmail"
         
-        await loginPage.gotoLoginPage(url_page);
         await loginPage.fillEmail(user_acocunt);
         await loginPage.clickLoginButton();
         await loginPage.assertInvalidEmailMessage();
@@ -56,7 +54,6 @@ test.describe.parallel("Login / Logout Flow", () => {
 
     test('Successful Login @smoke', async ({ page }) =>{
         
-        await loginPage.gotoLoginPage(url_page);
         await loginPage.fillEmail(user_name);
         await loginPage.fillPassword(user_pass);
         await loginPage.clickLoginButton();

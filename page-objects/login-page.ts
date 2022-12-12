@@ -31,6 +31,7 @@ export class LoginPage{
     async fillEmail(username: string){
         
         // username field
+        await this.inputName.isVisible();
         await this.inputName.isEnabled();
         await this.inputName.fill(username);
         expect(await this.inputName.getAttribute('value')).toEqual(username);
@@ -38,7 +39,9 @@ export class LoginPage{
     }
 
     async fillPassword(password: string){    
+
         // password field
+        await this.inputPassword.isVisible();
         await this.inputPassword.isEnabled();
         await this.inputPassword.fill(password);
         expect(await this.inputPassword.getAttribute('value')).toEqual(password);
@@ -67,4 +70,3 @@ export class LoginPage{
     }
 
 }
-

@@ -8,7 +8,7 @@ let user_pass = process.env.TODOIST_PASSWORD!;
 let url_page = process.env.TODOIST_URL!;
 let randomPassword = (Math.random() + 1).toString(36);
 
-test.describe.parallel.only("Login / Logout Flow", () => {
+test.describe.parallel("Login / Logout Flow", () => {
     let loginPage: LoginPage
     let homePage: HomePage
     

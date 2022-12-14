@@ -1,4 +1,4 @@
-# Todoist Automation Report 
+# Todoist Automation Repository
 
 ## Introdcution 
 - UI automation test repository designed to run end-to-end tests to validate the Todoist web APP.

@@ -1,21 +1,27 @@
-# todoist_automation
-UI Automation test report to validate the Todoist web APP
+# Todoist Automation Report 
 
-# Framework
+## Introdcution 
+- UI automation test repository designed to run end-to-end tests to validate the Todoist web APP.
+
+# Testing Framework
 - Playwright
+- TypeScript
+
+# Installation Process
+
+### Step to Install Playwright via npm
+- npm init playwright@latest
+
+### Run Playwright Tests Locally
+- npm run tests:chrome
 
 # Design Pattern Implemented
 - POM (Page Object Modele)
 
-# Code Analysis Tools Used
+# Code Analysis Tools
 - Eslint
 - Prettier
 
-# Load Environment Variables tool
+# Load Environment Variables Tool
 - DotEnv
 
-# Environment Variables File
-**TODO: Write a script to create an .env file with login credential variables.**
-File name: todoist_variables.env
-todoist_username=<user_name>
-todoist_password=<user_password>

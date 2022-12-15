@@ -95,7 +95,7 @@ export class HomePage{
         await this.taskTitle.isVisible();
         await this.taskTitle.isEnabled();
         await this.taskTitle.isEditable();
-        await this.taskTitle.type(task_title);
+        await this.taskTitle.fill(task_title);
         expect(await this.taskTitle.textContent()).toEqual(task_title);
     }
 
@@ -103,7 +103,7 @@ export class HomePage{
         await this.taskDescription.isVisible();
         await this.taskDescription.isEnabled();
         await this.taskDescription.isEditable();
-        await this.taskDescription.type(task_description);
+        await this.taskDescription.fill(task_description);
         expect(await this.taskDescription.textContent()).toEqual(task_description);
 
     }

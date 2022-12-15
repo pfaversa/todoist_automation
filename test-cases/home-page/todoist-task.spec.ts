@@ -42,7 +42,7 @@ test.describe('Task Manager Flow', () =>{
         let before_total_tasks = await homePage.returnTotalProjectTasks();
 
         await homePage.clickOnAddTaskButton();
-        await homePage.fillTaskInputFields('Task: '+randoTitle,'Description: ' + rnadoDescr);
+        await homePage.fillTaskInputFields('Task: '+randoTitle,'Description: '+rnadoDescr);
         
         // get total project tasks afer add the new one
         let after_total_tasks = await homePage.returnTotalProjectTasks();
@@ -62,7 +62,7 @@ test.describe('Task Manager Flow', () =>{
 
     })
 
-    test("Add 10 Tasks In Project Then Delete Them", async ({ page }) =>{
+    test.only("Add 10 Tasks In Project Then Delete Them", async ({ page }) =>{
 
         homePage = new HomePage(page);
         await homePage.verifyHomePageLoad();

@@ -62,7 +62,7 @@ test.describe('Task Manager Flow', () =>{
 
     })
 
-    test.only("Add 10 Tasks In Project Then Delete Them", async ({ page }) =>{
+    test("Add 10 Tasks In Project Then Delete Them", async ({ page }) =>{
 
         homePage = new HomePage(page);
         await homePage.verifyHomePageLoad();

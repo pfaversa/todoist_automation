@@ -9,3 +9,6 @@
 node_modules/*
 playwright-report/*
 test-results/*
+
+Files
+.DS_Store

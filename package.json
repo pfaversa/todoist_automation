@@ -4,10 +4,13 @@
   "description": "Automation Todoist App  with Playwright ",
   "main": "index.js",
   "scripts": {
-    "tests:chrome": "playwright test --config=playwright.config.ts --project=Chromium --reporter=html",
+    "tests:chromium": "playwright test --config=playwright.config.ts --project=Chromium --reporter=html",
     "tests:webkit": "playwright test --config=playwright.config.ts --project=Webkit --reporter=html",
     "tests:firefox": "playwright test --config=playwright.config.ts --project=Firefox --reporter=html",
-    "tests:smokeTests": "playwright test --config=playwright.config.ts --project=SmokeChromium --project=SmokeFirefox --project=SmokeWebkit --reporter=html --grep @smoke"
+    "tests:smokeTests": "playwright test --config=playwright.config.ts --project=headlessChromium --project=headlessFirefox --project=headlessWebkit --reporter=html --grep @smoke",
+    "tests:fullRegChromium": "playwright test --config=playwright.config.ts --project=headlessChromium --reporter=html",
+    "tests:fullRegFirefox": "playwright test --config=playwright.config.ts --project=headlessFirefox --reporter=html",
+    "tests:fullRegWebkit": "playwright test --config=playwright.config.ts --project=headlessWebkit  --reporter=html"
   },
   "repository": {
     "type": "git",

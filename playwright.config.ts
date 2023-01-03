@@ -23,14 +23,15 @@ const config: PlaywrightTestConfig = {
             use: {browserName: 'webkit'},
         },
         {
-            name: 'SmokeChromium',
+            name: 'headlessChromium',
             use: {browserName: 'chromium', headless: true},
         },
         {
-            name: 'SmokeFirefox',
+            name: 'headlessFirefox',
             use: {browserName: 'firefox', headless: true},
-        },        {
-            name: 'SmokeWebkit',
+        },        
+        {
+            name: 'headlessWebkit',
             use: {browserName: 'webkit', headless: true},
         },
     ],

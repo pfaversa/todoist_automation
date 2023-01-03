@@ -7,9 +7,9 @@ export class LoginPage{
     readonly inputName: Locator;
     readonly inputPassword: Locator;
     readonly btnLogin: Locator;
-    readonly msInvalidEmail: Locator;
-    readonly msWrongCredentials: Locator;
-    readonly msPasswordMissing: Locator;
+    readonly wrongInvalidEmail: Locator;
+    readonly wrongWrongCredentials: Locator;
+    readonly wrongPasswordMissing: Locator;
 
     //define constructor
     constructor(page: Page){
@@ -17,9 +17,9 @@ export class LoginPage{
         this.inputName = page.locator('#element-0'); // Id
         this.inputPassword = page.locator('#element-3'); // Id
         this.btnLogin = page.locator('button[data-gtm-id="start-email-login"]'); // css
-        this.msInvalidEmail = page.locator('#element-2') // Id
-        this.msWrongCredentials = page.locator('//div[text()="Wrong email or password."]'); //xPath
-        this.msPasswordMissing = page.locator('#element-5'); //Id
+        this.wrongInvalidEmail = page.locator('#element-2') // Id
+        this.wrongWrongCredentials = page.locator('//div[text()="Wrong email or password."]'); //xPath
+        this.wrongPasswordMissing = page.locator('#element-5'); //Id
 
     }
 
@@ -52,21 +52,21 @@ export class LoginPage{
     }
 
     async assertWrongCredentialsMessage(){
-        await this.msWrongCredentials.isVisible();
-        await this.msInvalidEmail.isHidden();
-        await this.msPasswordMissing.isHidden();
+        await this.wrongWrongCredentials.isVisible();
+        await this.wrongInvalidEmail.isHidden();
+        await this.wrongPasswordMissing.isHidden();
     }
 
     async assertPasswordMissingMessage(){
-        await this.msPasswordMissing.isVisible();
-        await this.msWrongCredentials.isHidden();
-        await this.msInvalidEmail.isHidden();
+        await this.wrongPasswordMissing.isVisible();
+        await this.wrongWrongCredentials.isHidden();
+        await this.wrongInvalidEmail.isHidden();
     }
 
     async assertInvalidEmailMessage(){
-        await this.msInvalidEmail.isVisible();
-        await this.msWrongCredentials.isHidden();
-        await this.msPasswordMissing.isHidden();
+        await this.wrongInvalidEmail.isVisible();
+        await this.wrongWrongCredentials.isHidden();
+        await this.wrongPasswordMissing.isHidden();
     }
 
 }

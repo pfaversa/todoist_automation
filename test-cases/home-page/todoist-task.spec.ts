@@ -1,19 +1,21 @@
-import {test, expect} from '@playwright/test';
-import {LoginPage} from '../../page-objects/login-page';
+import { test, expect } from '@playwright/test';
+import { LoginPage } from '../../page-objects/login-page';
 import { HomePage } from '../../page-objects/home-page';
+import { ProjectPage } from '../../page-objects/project-page';
+import { TaskPage } from '../../page-objects/task-page';
 
+// Load .env variables
 require('dotenv').config();
 let user_name = process.env.TODOIST_USERNAME!
 let user_pass = process.env.TODOIST_PASSWORD!
-let project_id = process.env.TODOIST_ID_BASE_PROJECT!
-let project_title = process.env.TODOIST_TITLE_BASE_PROJECT!
 let url_page = process.env.TODOIST_URL!
-let new_total_tasks = process.env.TODOIST_TOTAL_TASKS_TO_ADD!
 
-test.describe('Task Manager Flow', () =>{
+test.describe.only('Project and Task Flow', () =>{
 
-    let loginPage: LoginPage
-    let homePage: HomePage
+    let loginPage: LoginPage;
+    let homePage: HomePage;
+    let projectPage: ProjectPage;
+    let taskPage: TaskPage;
     
     test.beforeEach(async ({ page }) =>{
         loginPage = new LoginPage(page);
@@ -28,74 +30,104 @@ test.describe('Task Manager Flow', () =>{
         await page.close()
     })
 
-    test.only('Add A New Task In Porject And Delete It @smoke', async ({ page }) =>{
-        const randoTitle = Math.random().toString(36).substring(2);
-        const rnadoDescr = Math.random().toString(36).substring(2);
+    test('Create a new project and add a new task. Finally, delete task and project @smoke', async ({ page }) =>{
+        // Test Description //
+        // Click on Porject menu, then click on 'Add project' button, input project name and save it. Verify new project is created.
+        // Then, click on 'Add task' button, input task title and task description. Verify new task was added.
+        // Then, delete task and verify task was deleted. 
+        // Finally, delete project.
+
+        //Random variables 
+        const randoProjectTitle = "Project - " + Math.random().toString(36).substring(2);
+        const randoTaskTitle = "Task - " +  Math.random().toString(36).substring(2);
+        const randoTaskDescr = "Description - " + Math.random().toString(36).substring(2);
 
         homePage = new HomePage(page);
-        await homePage.verifyHomePageLoad();
+        await homePage.verifyHomePageIsVisible();
+        await homePage.openProjectPage();
 
-        await homePage.selectProject(project_id)
-        expect(await homePage.returnPorjectTitleSelected()).toEqual(project_title);
+        projectPage = new ProjectPage(page);
+        await projectPage.createNewProject(randoProjectTitle);
+        expect(await projectPage.getProjectTitleSelected()).toEqual(randoProjectTitle);
+        let new_project_id = await projectPage.getProjectId();
+
+        taskPage = new TaskPage(page);
 
         // get total project tasks before add the new one
-        let before_total_tasks = await homePage.returnTotalProjectTasks();
+        let before_total_tasks = await taskPage.returnTotalProjectTasks();
 
-        await homePage.clickOnAddTaskButton();
-        await homePage.fillTaskInputFields('Task: '+randoTitle,'Description: '+rnadoDescr);
+        await taskPage.clickOnAddTaskButton();
+        await taskPage.fillTaskInputFields(randoTaskTitle,randoTaskDescr);
         
         // get total project tasks afer add the new one
-        let after_total_tasks = await homePage.returnTotalProjectTasks();
+        let after_total_tasks = await taskPage.returnTotalProjectTasks();
 
         // verify project has one more task 
         expect(before_total_tasks < after_total_tasks).toBeTruthy();
 
         // delete last task added
-        await homePage.deleteLastTaskInList();
+        await taskPage.deleteLastTaskInList();
 
         // get total project tasks after delete one
-        let finally_total_tasks = await homePage.returnTotalProjectTasks();
+        let finally_total_tasks = await taskPage.returnTotalProjectTasks();
 
         // verify project has one less task 
         expect(before_total_tasks == finally_total_tasks).toBeTruthy();
 
+        await projectPage.deleteProject(randoProjectTitle);
+        expect(await projectPage.getProjectId()).not.toEqual(new_project_id);
 
     })
 
-    test("Add 10 Tasks In Project Then Delete Them", async ({ page }) =>{
+    test("Create a new project and add 10 tasks. Finally, delete all tasks created and delete project", async ({ page }) =>{
+        // Test Description //
+        // Click on Porject menu, then click on 'add project' button, input project name and save it. Verify new project is created.
+        // Then, click on 'Add task' button, input task title and task description and save it (repeat the process until 10) 
+        // Then, delete all tasks created and finally delete the project.
+
+        const randoProjectTitle = "Project - " + Math.random().toString(36).substring(2);
 
         homePage = new HomePage(page);
-        await homePage.verifyHomePageLoad();
+        await homePage.verifyHomePageIsVisible();
+        await homePage.openProjectPage();
 
-        await homePage.selectProject(project_id)
-        expect(await homePage.returnPorjectTitleSelected()).toEqual(project_title);
+        projectPage = new ProjectPage(page);
+        await projectPage.createNewProject(randoProjectTitle);
+        expect(await projectPage.getProjectTitleSelected()).toEqual(randoProjectTitle);
+        let new_project_id = await projectPage.getProjectId();
 
-        homePage.clickOnAddTaskButton();
 
+        taskPage = new TaskPage(page);
+        
         // get total project tasks before add the new ones
-        let before_total_tasks = await homePage.returnTotalProjectTasks();
-  
-        for(let i=1; i<= Number(new_total_tasks);i++){
-            const randoTitle = Math.random().toString(36).substring(2);
-            const rnadoDescr = Math.random().toString(36).substring(2);
-            await homePage.fillTaskInputFields('Task '+i+': '+randoTitle,'Description:' + rnadoDescr);
+        let before_total_tasks = await taskPage.returnTotalProjectTasks();
+        
+        taskPage.clickOnAddTaskButton();
+
+        for(let i=1; i<= 10; i++){
+            const randoTaskTitle = "Task - " +  Math.random().toString(36).substring(2);
+            const randoTaskDescr = "Description - " + Math.random().toString(36).substring(2);
+            await taskPage.fillTaskInputFields(randoTaskTitle + ' ('+i+')',randoTaskDescr + ' ('+i+')');
         }
 
         // get total project tasks afer add the new ones
-        let after_total_tasks = await homePage.returnTotalProjectTasks();
+        let after_total_tasks = await taskPage.returnTotalProjectTasks();
 
         // verify project has one more task 
         expect(before_total_tasks < after_total_tasks).toBeTruthy();
 
-        for(let i=1; i<=Number(new_total_tasks);i++){
-            await homePage.deleteLastTaskInList();
+        for(let i=1; i<=10; i++){
+            await taskPage.deleteLastTaskInList();
         }
 
         // get total project tasks after delete one
-        let finally_total_tasks = await homePage.returnTotalProjectTasks();
+        let finally_total_tasks = await taskPage.returnTotalProjectTasks();
 
         // verify project has one less task 
         expect(before_total_tasks == finally_total_tasks).toBeTruthy();
+
+        await projectPage.deleteProject(randoProjectTitle);
+        expect(await projectPage.getProjectId()).not.toEqual(new_project_id);
 
     })
 

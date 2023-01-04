@@ -10,7 +10,7 @@ let user_name = process.env.TODOIST_USERNAME!
 let user_pass = process.env.TODOIST_PASSWORD!
 let url_page = process.env.TODOIST_URL!
 
-test.describe.only('Project and Task Flow', () =>{
+test.describe.parallel('Project and Task Flow', () =>{
 
     let loginPage: LoginPage;
     let homePage: HomePage;
@@ -30,7 +30,7 @@ test.describe.only('Project and Task Flow', () =>{
         await page.close()
     })
 
-    test('Create a new project and add a new task. Finally, delete task and project @smoke', async ({ page }) =>{
+    test('Create a new project with a new task. Finally, delete task and project @smoke', async ({ page }) =>{
         // Test Description //
         // Click on Porject menu, then click on 'Add project' button, input project name and save it. Verify new project is created.
         // Then, click on 'Add task' button, input task title and task description. Verify new task was added.
@@ -79,7 +79,7 @@ test.describe.only('Project and Task Flow', () =>{
 
     })
 
-    test("Create a new project and add 10 tasks. Finally, delete all tasks created and delete project", async ({ page }) =>{
+    test("Create a new project with 10 tasks. Finally, delete all tasks created and delete project", async ({ page }) =>{
         // Test Description //
         // Click on Porject menu, then click on 'add project' button, input project name and save it. Verify new project is created.
         // Then, click on 'Add task' button, input task title and task description and save it (repeat the process until 10) 

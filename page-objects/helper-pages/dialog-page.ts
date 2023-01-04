@@ -17,21 +17,21 @@ export class DialogPage{
 
     async verifySubmitDialogBoxIsOpen(){
         await this.dialogBox.waitFor({state:'visible'});
-        await this.btnDialogBoxSubmit.isVisible();
-        await this.btnDialogBoxSubmit.isDisabled();
+        await expect(this.btnDialogBoxSubmit).toBeVisible();
+        await expect(this.btnDialogBoxSubmit).toBeDisabled();
     }
 
     async verifyDeleteDialogBoxIsOpen(displayed_text: string){
         await this.dialogBox.waitFor({state:'visible'});
         expect(await this.dialogBox.textContent()).toContain(displayed_text);
-        await this.btnDialogBoxDelete.isVisible();
-        await this.btnDialogBoxDelete.isEnabled();
+        await expect(this.btnDialogBoxDelete).toBeVisible();
+        await expect(this.btnDialogBoxDelete).toBeEnabled();
     }
 
     async submitDialogBox(){
         await this.dialogBox.waitFor({state:'visible'});
-        await this.btnDialogBoxSubmit.isVisible();
-        await this.btnDialogBoxSubmit.isEnabled();
+        await expect(this.btnDialogBoxSubmit).toBeVisible();
+        await expect(this.btnDialogBoxSubmit).toBeVisible();
         await this.btnDialogBoxSubmit.click();
         await this.dialogBox.waitFor({state:'hidden'});
     }

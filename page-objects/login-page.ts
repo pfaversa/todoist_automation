@@ -7,9 +7,9 @@ export class LoginPage{
     readonly inputName: Locator;
     readonly inputPassword: Locator;
     readonly btnLogin: Locator;
-    readonly wrongInvalidEmail: Locator;
-    readonly wrongWrongCredentials: Locator;
-    readonly wrongPasswordMissing: Locator;
+    readonly errorBadFormattedEmail: Locator;
+    readonly errorCredentials: Locator;
+    readonly errorPasswordMissing: Locator;
 
     //define constructor
     constructor(page: Page){
@@ -17,9 +17,9 @@ export class LoginPage{
         this.inputName = page.locator('#element-0'); // Id
         this.inputPassword = page.locator('#element-3'); // Id
         this.btnLogin = page.locator('button[data-gtm-id="start-email-login"]'); // css
-        this.wrongInvalidEmail = page.locator('#element-2') // Id
-        this.wrongWrongCredentials = page.locator('//div[text()="Wrong email or password."]'); //xPath
-        this.wrongPasswordMissing = page.locator('#element-5'); //Id
+        this.errorBadFormattedEmail = page.locator('#element-2') // Id
+        this.errorCredentials = page.locator('//div[text()="Wrong email or password."]');  // xPath
+        this.errorPasswordMissing = page.locator('#element-5'); // Id
 
     }
 
@@ -31,8 +31,8 @@ export class LoginPage{
     async fillEmail(username: string){
         
         // username field
-        await this.inputName.isVisible();
-        await this.inputName.isEnabled();
+        await expect(this.inputName).toBeVisible();
+        await expect(this.inputName).toBeEnabled()
         await this.inputName.fill(username);
         expect(await this.inputName.getAttribute('value')).toEqual(username);
 
@@ -41,8 +41,8 @@ export class LoginPage{
     async fillPassword(password: string){    
 
         // password field
-        await this.inputPassword.isVisible();
-        await this.inputPassword.isEnabled();
+        await expect(this.inputPassword).toBeVisible();
+        await expect(this.inputPassword).toBeEnabled();
         await this.inputPassword.fill(password);
         expect(await this.inputPassword.getAttribute('value')).toEqual(password);
     }
@@ -51,22 +51,33 @@ export class LoginPage{
         await this.btnLogin.click();
     }
 
-    async assertWrongCredentialsMessage(){
-        await this.wrongWrongCredentials.isVisible();
-        await this.wrongInvalidEmail.isHidden();
-        await this.wrongPasswordMissing.isHidden();
+    async verifyCredentialErrorMessage(){
+        await expect(this.errorCredentials).toBeVisible();
+        await expect(this.errorBadFormattedEmail).toBeHidden();
+        await expect(this.errorPasswordMissing).toBeHidden();
     }
 
-    async assertPasswordMissingMessage(){
-        await this.wrongPasswordMissing.isVisible();
-        await this.wrongWrongCredentials.isHidden();
-        await this.wrongInvalidEmail.isHidden();
+    async getCredentialErrorMessage(){
+        return (await this.errorCredentials.textContent());
     }
 
-    async assertInvalidEmailMessage(){
-        await this.wrongInvalidEmail.isVisible();
-        await this.wrongWrongCredentials.isHidden();
-        await this.wrongPasswordMissing.isHidden();
+    async verifyPasswordMissingMessage(){
+        await expect(this.errorPasswordMissing).toBeVisible();
+        await expect(this.errorCredentials).toBeHidden();
+        await expect(this.errorBadFormattedEmail).toBeHidden();
     }
 
+    async getPasswordMissingMessag(){
+        return (await this.errorPasswordMissing.textContent());
+    }
+
+    async verifyBadFormattedEmailMessage(){
+        await expect(this.errorBadFormattedEmail).toBeVisible();
+        await expect(this.errorCredentials).toBeHidden();
+        await expect(this.errorPasswordMissing).toBeHidden();
+    }
+    
+    async getBadFormattedEmailMessage(){
+        return (this.errorBadFormattedEmail.textContent());
+    }
 }

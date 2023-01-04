@@ -1,6 +1,6 @@
 import {expect,Locator,Page} from '@playwright/test'
 
-export class HomePage{
+export class LandingPage{
     // define selectors
     readonly page: Page;
     readonly topBar: Locator;
@@ -14,7 +14,7 @@ export class HomePage{
         this.topBar = page.locator('#top_bar_inner'); // id
         this.leftBar = page.locator('#left_menu_inner'); // id
         this.leftProjectPanel = page.locator('#left-menu-projects-panel'); // id
-        this.btnGoToProjects = page.locator('//a//div[text()="Projects"]'); // xpath
+        this.btnGoToProjects = page.locator('a>div:has-text("Projects")'); // css
     }
     
     // define methods
@@ -24,9 +24,9 @@ export class HomePage{
     }
 
     async openProjectPage(){
-        await this.leftProjectPanel.isVisible();
-        await this.btnGoToProjects.isVisible();
-        await this.btnGoToProjects.isEnabled();
+        await expect(this.leftProjectPanel).toBeVisible();
+        await expect(this.btnGoToProjects).toBeVisible();
+        await expect(this.btnGoToProjects).toBeEnabled();
         await this.btnGoToProjects.click();
     }
 

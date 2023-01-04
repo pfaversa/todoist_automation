@@ -1,5 +1,5 @@
 import {expect,Locator,Page} from '@playwright/test'
-import {DialogPage} from './helper-pages/dialog-page'
+import { DialogPage } from './helper-pages/dialog-page'
 
 export class ProjectPage{
 
@@ -29,7 +29,7 @@ export class ProjectPage{
         this.page = page;
         this.dialogBox = new DialogPage(this.page);
 
-        this.pageTitle = page.locator('//h1[text()="Projects"]'); //xpath
+        this.pageTitle = page.locator('h1:has-text("Projects")'); //css
         this.activeTab = page.locator('#active'); //id
         this.archivedTab = page.locator('#archived'); //id
 
@@ -45,28 +45,28 @@ export class ProjectPage{
     }
 
     async verifyProjectPageIsVisible(){
-        await this.pageTitle.isVisible();
+        await expect(this.pageTitle).toBeVisible();
         
-        await this.activeTab.isVisible();
-        expect(await this.activeTab.getAttribute('aria-selected')).toBeTruthy
+        await expect(this.activeTab).toBeVisible();
+        expect(await this.activeTab.getAttribute('aria-selected')).toBeTruthy();
         
-        await this.archivedTab.isVisible()
+        await expect(this.archivedTab).toBeVisible();
         
-        await this.btnAddNewProject.isEnabled();
-        await this.btnAddNewProject.isVisible();
+        await expect(this.btnAddNewProject).toBeEnabled();
+        await expect(this.btnAddNewProject).toBeVisible();
         
         expect(this.page).toHaveURL(new RegExp('/app/projects/active$'));
     }
 
     async createNewProject(project_name: string){        
-        await this.btnAddNewProject.isEnabled();
-        await this.btnAddNewProject.isVisible();
+        await expect(this.btnAddNewProject).toBeEnabled();
+        await expect(this.btnAddNewProject).toBeVisible();
         await this.btnAddNewProject.click();
         
         await this.dialogBox.verifySubmitDialogBoxIsOpen();
         
-        await this.inputProjectName.isVisible();
-        await this.inputProjectName.isEnabled();
+        await expect(this.inputProjectName).toBeVisible();
+        await expect(this.inputProjectName).toBeEnabled();
         await this.inputProjectName.fill(project_name);
 
         await this.dialogBox.submitDialogBox();
@@ -81,7 +81,7 @@ export class ProjectPage{
     }
 
     async getProjectTitleSelected(){
-        await this.projectTitle.isVisible();
+        await expect(this.projectTitle).toBeVisible();
         return (this.projectTitle.textContent());
     }
 

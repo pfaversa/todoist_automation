@@ -1,6 +1,6 @@
 import {expect,Locator,Page} from '@playwright/test'
 import { AlertPage } from '../page-objects/helper-pages/alert-page'
-import {DialogPage} from './helper-pages/dialog-page'
+import { DialogPage } from './helper-pages/dialog-page'
 
 export class TaskPage{
 

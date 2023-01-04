@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../../page-objects/login-page';
-import { HomePage } from '../../page-objects/home-page';
+import { LandingPage } from '../../page-objects/landing-page';
 import { ProjectPage } from '../../page-objects/project-page';
 import { TaskPage } from '../../page-objects/task-page';
 
@@ -13,7 +13,7 @@ let url_page = process.env.TODOIST_URL!
 test.describe.parallel('Project and Task Flow', () =>{
 
     let loginPage: LoginPage;
-    let homePage: HomePage;
+    let landingPage: LandingPage;
     let projectPage: ProjectPage;
     let taskPage: TaskPage;
     
@@ -42,11 +42,12 @@ test.describe.parallel('Project and Task Flow', () =>{
         const randoTaskTitle = "Task - " +  Math.random().toString(36).substring(2);
         const randoTaskDescr = "Description - " + Math.random().toString(36).substring(2);
 
-        homePage = new HomePage(page);
-        await homePage.verifyHomePageIsVisible();
-        await homePage.openProjectPage();
+        landingPage = new LandingPage(page);
+        await landingPage.verifyHomePageIsVisible();
+        await landingPage.openProjectPage();
 
         projectPage = new ProjectPage(page);
+        await projectPage.verifyProjectPageIsVisible();
         await projectPage.createNewProject(randoProjectTitle);
         expect(await projectPage.getProjectTitleSelected()).toEqual(randoProjectTitle);
         let new_project_id = await projectPage.getProjectId();
@@ -87,21 +88,23 @@ test.describe.parallel('Project and Task Flow', () =>{
 
         const randoProjectTitle = "Project - " + Math.random().toString(36).substring(2);
 
-        homePage = new HomePage(page);
-        await homePage.verifyHomePageIsVisible();
-        await homePage.openProjectPage();
+        landingPage = new LandingPage(page);
+        await landingPage.verifyHomePageIsVisible();
+        await landingPage.openProjectPage();
 
         projectPage = new ProjectPage(page);
         await projectPage.createNewProject(randoProjectTitle);
         expect(await projectPage.getProjectTitleSelected()).toEqual(randoProjectTitle);
         let new_project_id = await projectPage.getProjectId();
 
-
         taskPage = new TaskPage(page);
         
-        // get total project tasks before add the new ones
+        // get the total project tasks before starto to add the new ones
         let before_total_tasks = await taskPage.returnTotalProjectTasks();
         
+        // verify the project has 0 task
+        expect(before_total_tasks==0).toBeTruthy();
+
         taskPage.clickOnAddTaskButton();
 
         for(let i=1; i<= 10; i++){
@@ -110,11 +113,11 @@ test.describe.parallel('Project and Task Flow', () =>{
             await taskPage.fillTaskInputFields(randoTaskTitle + ' ('+i+')',randoTaskDescr + ' ('+i+')');
         }
 
-        // get total project tasks afer add the new ones
+        // get the total project tasks afer add the new ones
         let after_total_tasks = await taskPage.returnTotalProjectTasks();
-
-        // verify project has one more task 
-        expect(before_total_tasks < after_total_tasks).toBeTruthy();
+        
+        // verify the project has 10 tasks
+        expect(after_total_tasks==10).toBeTruthy();
 
         for(let i=1; i<=10; i++){
             await taskPage.deleteLastTaskInList();
@@ -123,8 +126,8 @@ test.describe.parallel('Project and Task Flow', () =>{
         // get total project tasks after delete one
         let finally_total_tasks = await taskPage.returnTotalProjectTasks();
 
-        // verify project has one less task 
-        expect(before_total_tasks == finally_total_tasks).toBeTruthy();
+        // verify all tasks were deleted
+        expect(finally_total_tasks==0).toBeTruthy();
 
         await projectPage.deleteProject(randoProjectTitle);
         expect(await projectPage.getProjectId()).not.toEqual(new_project_id);

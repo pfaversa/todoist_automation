@@ -37,7 +37,7 @@ export class ProjectPage{
         this.projectTitle = page.locator('h1[role="heading"]'); //css
 
         this.inputProjectName = page.locator('#edit_project_modal_field_name'); //id
-        this.btnAddNewProject = page.locator('//div//span[text()="Add project"]'); // xpath
+        this.btnAddNewProject = page.locator('button>>span:has-text("Add project")'); // css
         this.btnMoreProjectActions = page.locator('button[aria-label="Project options menu"]') //css
         this.projectMenu = page.locator('ul.menu_list.project_view_menu') //class
         this.btnMenuDeleteProject = page.locator('role=menuitem[name="Delete project"]') // role selector

@@ -21,8 +21,6 @@ jobs:
           echo TODOIST_URL=${{ secrets.TODOIST_URL }} >> .env
           echo TODOIST_USERNAME=${{ secrets.TODOIST_USERNAME }} >> .env
           echo TODOIST_PASSWORD= ${{ secrets.TODOIST_PASSWORD }} >> .env
-          echo TODOIST_ID_BASE_PROJECT= ${{ secrets.TODOIST_ID_BASE_PROJECT }} >> .env
-          echo TODOIST_TITLE_BASE_PROJECT= ${{ secrets.TODOIST_TITLE_BASE_PROJECT }} >> .env
           cat .env
       # create the playwright-report folder to uploda the test result
       - name: Create dir

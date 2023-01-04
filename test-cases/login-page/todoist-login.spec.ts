@@ -59,7 +59,7 @@ test.describe.parallel("Login / Logout Flow", () => {
         await loginPage.clickLoginButton();
         
         homePage = new HomePage(page);
-        await homePage.verifyHomePageLoad();
+        await homePage.verifyHomePageIsVisible();
         expect(await page.title()).toEqual('Today: Todoist');
 
     })

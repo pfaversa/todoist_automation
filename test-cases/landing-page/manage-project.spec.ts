@@ -80,7 +80,7 @@ test.describe.parallel('Project and Task Flow', () =>{
 
     })
 
-    test.only("Create a new project with 10 tasks. Finally, delete all tasks created and delete project", async ({ page }) =>{
+    test("Create a new project with 10 tasks. Finally, delete all tasks created and delete project", async ({ page }) =>{
         // Test Description //
         // Click on Porject menu, then click on 'add project' button, input project name and save it. Verify new project is created.
         // Then, click on 'Add task' button, input task title and task description and save it (repeat the process until 10) 
